@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 var scene = new THREE.Scene();
 
@@ -8,14 +9,18 @@ var camera = new THREE.PerspectiveCamera(75,
     1000
 );
 
+
 camera.position.z = 100;
 
-var renderer = new THREE.WebGLRenderer();
+var renderer = new THREE.WebGLRenderer({ alpha: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
+// mouse controls
+var controls = new OrbitControls(camera, renderer.domElement);
+// controls.autoRotate = true;
 
 var geometry = new THREE.BoxGeometry(20, 20, 20);
-var material = new THREE.MeshNormalMaterial()
+var material = new THREE.MeshNormalMaterial({ wireframe: true })
 
 var cube = new THREE.Mesh(geometry, material);
 
@@ -37,6 +42,7 @@ function animate() {
     cube.rotation.x += 0.05;
     cube.rotation.y += 0.03;
     camera.updateProjectionMatrix();
+    controls.update();
     renderer.render(scene, camera);
 }
 animate();
